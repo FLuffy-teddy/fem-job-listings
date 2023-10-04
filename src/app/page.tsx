@@ -16,13 +16,14 @@ const bgColor = "bg-background";
 export default function Home() {
   const [jobFilter, setJobFilter] = useState<string[]>([]);
 
-  function buildOutFilter() {
+  function buildOutJobs() {
     //run through filters and return job listings based on filters selected
     //if no filters are selected return all jobs
     return jobListings.map((jobListing) => (
       <li
         className="bg-white my-4 p-4 shadow-lg border-2 border-white rounded-md"
         key={jobListing.id}
+        data-filters={`${jobListing.role},${jobListing.level},${jobListing.tools},${jobListing.languages}`}
       >
         <div className="flex justify-between">
           <div className="flex">
@@ -101,7 +102,6 @@ export default function Home() {
   }
   const jobFilterEvent = (event: any) => {
     const jobAttribute = String(event.target.getAttribute("data-attribute"));
-
     //if filter is already active prevent filter from attaching
 
     const isFound = jobFilter.some((element) => {
@@ -129,6 +129,50 @@ export default function Home() {
       jobFilter.filter((newFilterType) => newFilterType !== newFilterType)
     );
   }
+  function buildOutFilter() {
+    return (
+      <>
+        <div className="absolute w-full px-4 py-8 -top-16 bg-white shadow-lg border-2 border-white rounded-md flex align-center flex justify-between">
+          <ul className="flex">
+            {jobFilter.map((filter, i) => (
+              <div className="flex px-2" key={i}>
+                <li
+                  className={`${fontColor} ${filterColor} border-1 border-cyan-900 p-2 rounded-md`}
+                  data-attribute={filter}
+                >
+                  {filter}
+                </li>
+                <button
+                  className={`h-full w-1/4 bg-cyan-900 border-full px-2 text-white rounded-sm ${buttonColor}`}
+                  onClick={removeJobFilter}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </ul>
+          <button className={`${fontColor}`} onClick={resetJobFilter}>
+            Clear
+          </button>
+        </div>
+        <ul>
+          {jobListings.map((jobListing) => (
+            <>
+              {jobFilter.includes(jobListing.role) ||
+              jobFilter.includes(jobListing.level) ||
+              jobFilter.includes(jobListing.languages[0]) ||
+              jobFilter.includes(jobListing.languages[1]) ||
+              jobFilter.includes(jobListing.languages[2]) ||
+              jobFilter.includes(jobListing.tools[0]) ||
+              jobFilter.includes(jobListing.tools[1]) ? (
+                <li key={jobListing.id}>{jobFilter}</li>
+              ) : null}
+            </>
+          ))}
+        </ul>
+      </>
+    );
+  }
   return (
     <main className={`min-h-full ${bgColor}`}>
       <header className="min-h-8 bg-cyan-900">
@@ -140,33 +184,7 @@ export default function Home() {
         />
       </header>
       <ul className="max-w-6xl m-auto py-8 relative">
-        {jobFilter.length > 0 ? (
-          <div className="absolute w-full px-4 py-8 -top-16 bg-white shadow-lg border-2 border-white rounded-md flex align-center flex justify-between">
-            <ul className="flex">
-              {jobFilter.map((filter, i) => (
-                <div className="flex px-2" key={i}>
-                  <li
-                    className={`${fontColor} ${filterColor} border-1 border-cyan-900 p-2 rounded-md`}
-                    data-attribute={filter}
-                  >
-                    {filter}
-                  </li>
-                  <button
-                    className={`h-full w-1/4 bg-cyan-900 border-full px-2 text-white rounded-sm ${buttonColor}`}
-                    onClick={removeJobFilter}
-                  >
-                    X
-                  </button>
-                </div>
-              ))}
-            </ul>
-            <button className={`${fontColor}`} onClick={resetJobFilter}>
-              Clear
-            </button>
-          </div>
-        ) : (
-          buildOutFilter()
-        )}
+        {jobFilter.length > 0 ? buildOutFilter() : buildOutJobs()}
       </ul>
     </main>
   );

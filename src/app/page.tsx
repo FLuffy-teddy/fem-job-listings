@@ -4,8 +4,8 @@ import { useState } from "react";
 import data from "../json/data.json";
 import headerImg from "../../public/bg-header-desktop.svg";
 import headermobile from "../../public/bg-header-mobile.svg";
-import JobsComponent from "../app/components/jobs";
-import Filter from "../app/components/filter";
+import JobsComponent from "../components/jobs";
+import Filter from "../components/filter";
 import Image from "next/image";
 
 export type jobType = {
@@ -51,12 +51,7 @@ export default function App() {
   return (
     <>
       <header className="mb-10 w-full bg-[#5ba4a4]">
-        <Image
-          src={window.innerWidth > 750 ? headerImg : headermobile}
-          height={1000}
-          width={2000}
-          alt={"Header"}
-        />
+        <Image src={headerImg} height={1000} width={2000} alt={"Header"} />
       </header>
       <main className="px-6 text-base">
         <Filter

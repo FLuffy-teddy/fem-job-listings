@@ -1,5 +1,5 @@
 import { LogoArray } from "./imagesarray";
-import { jobType } from "../page";
+import { jobType } from "../app/page";
 import Image from "next/image";
 
 type propsType = {

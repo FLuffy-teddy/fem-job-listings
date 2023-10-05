@@ -1,6 +1,6 @@
-import { jobType } from "../page";
-import data from "../../json/data.json";
-import RemoveIcon from "../../../public/icon-remove.svg";
+import { jobType } from "../app/page";
+import data from "../json/data.json";
+import RemoveIcon from "../../public/icon-remove.svg";
 import Image from "next/image";
 
 type propsTypeFilter = {

@@ -27,14 +27,25 @@ export type jobType = {
 export default function App() {
   const [jobs, setJobs] = useState<jobType[]>(data);
   const [filterText, setFilterText] = useState<string[]>([]);
+
   function handleFilter(filterCriteria: string) {
-    setFilterText([...filterText, filterCriteria]);
+    const isFound = filterText.find((element) => {
+      if (element === filterCriteria) {
+        return true;
+      }
+      return false;
+    });
+
     const newFilter = [...jobs].filter((item) =>
       [item.role, item.level, ...item.tools, ...item.languages].includes(
         filterCriteria
       )
     );
-    setJobs(newFilter);
+
+    if (!isFound) {
+      setFilterText([...filterText, filterCriteria]);
+      setJobs(newFilter);
+    }
   }
 
   return (

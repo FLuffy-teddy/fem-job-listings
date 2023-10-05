@@ -1,5 +1,6 @@
 import { LogoArray } from "./imagesarray";
-import { jobType } from "../app";
+import { jobType } from "../page";
+import Image from "next/image";
 
 type propsType = {
   jobs: jobType[];
@@ -12,47 +13,52 @@ export default function JobsComponent({ jobs, handleFilter }: propsType) {
       {jobs.map((job) => (
         <div
           key={job.id}
-          className="flex md:flex-row flex-col gap-6 bg-white justify-between md:items-center shadow-xl py-4 px-6 "
+          className="flex md:flex-row flex-col gap-6 bg-white justify-between md:items-center shadow-xl py-4 px-6 shadow-filter"
         >
           <div className="flex md:flex-row relative flex-col justify-center md:items-center gap-4 border-b pb-4 md:border-none">
             <section className="absolute top-0 -translate-y-1/2 md:relative md:top-12">
-              <img src={LogoArray[job.id - 1]} alt="Image" className="w-2/3" />
+              <Image
+                src={LogoArray[job.id - 1]}
+                width={50}
+                height={50}
+                alt="Company Logo"
+              />
             </section>
             <section className="mt-12 flex flex-col gap-2">
               <div className="flex gap-3 items-center">
-                <span className="text-[#7b8e8e] font-bold">{job.company}</span>
+                <span className="text-primary font-bold">{job.company}</span>
                 {job.new ? (
-                  <span className="bg-[#7b8e8e] text-white py-1 px-2 rounded-2xl">
+                  <span className="bg-primary text-white p-2 rounded-2xl leading-none">
                     NEW!
                   </span>
                 ) : (
                   <></>
                 )}
                 {job.featured ? (
-                  <span className="bg-[#2c3a3a] rounded-2xl text-white py-1 px-2">
+                  <span className="bg-tertiary rounded-2xl text-white p-2 leading-none">
                     FEATURED
                   </span>
                 ) : (
                   <></>
                 )}
               </div>
-              <div className="font-black hover:text-[#7b8e8e] hover:cursor-pointer">
+              <div className="font-black hover:text-primary hover:cursor-pointer">
                 {job.position}
               </div>
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-center text-slate-400">
                 <span>{job.postedAt}</span>.<span>{job.contract}</span>.
                 <span>{job.location}</span>
               </div>
             </section>
           </div>
 
-          <section className="flex flex-wrap gap-6">
+          <section className="flex flex-wrap gap-4">
             {[job.role, job.level, ...job.tools, ...job.languages].map(
               (item, i) => (
                 <div
                   key={i}
                   onClick={() => handleFilter(item)}
-                  className="bg-slate-300 py-1 px-2 rounded"
+                  className="bg-filter p-2 rounded cursor-pointer text-primary hover:text-white hover:bg-primary"
                 >
                   {item}
                 </div>

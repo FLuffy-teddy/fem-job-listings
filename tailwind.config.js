@@ -14,7 +14,9 @@ module.exports = {
         secondary: "hsl(180, 8%, 52%)",
         tertiary: "hsl(180, 14%, 20%)",
       },
-
+      fontSize: {
+        base: ["15px", "12px"],
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

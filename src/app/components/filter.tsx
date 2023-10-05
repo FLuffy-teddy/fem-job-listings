@@ -1,6 +1,7 @@
-import { jobType } from "../app";
+import { jobType } from "../page";
 import data from "../../json/data.json";
-import RemoveIcon from "./assets/images/icon-remove.svg";
+import RemoveIcon from "../../../public/icon-remove.svg";
+import Image from "next/image";
 
 type propsTypeFilter = {
   filterText: string[];
@@ -39,20 +40,23 @@ export default function Filter({
           <div className="flex flex-wrap gap-3 px-4">
             {filterText.map((f) => (
               <div key={f} className="flex items-center ">
-                <span className="bg-[#eef6f6] p-1 px-2 rounded-tl rounded-bl font-semibold text-[#7b8e8e]">
+                <span className="bg-filter p-2 rounded-tl rounded-bl font-semibold text-primary">
                   {f}{" "}
                 </span>
                 <div
-                  className="bg-[#7b8e8e] p-2 rounded-br rounded-tr hover:bg-[#2c3a3a] hover:cursor-pointer"
+                  className="bg-primary p-2 rounded-br rounded-tr hover:bg-tertiary hover:cursor-pointer min-h-full flex"
                   onClick={() => removeSelectedFilter(f)}
                 >
-                  <img src={RemoveIcon} alt="remove" />
+                  <Image src={RemoveIcon} height={12} width={12} alt="Remove" />
                 </div>
               </div>
             ))}
           </div>
           <div className="">
-            <button className="hover:underline p-1" onClick={ClearFilter}>
+            <button
+              className="hover:underline hover:text-primary p-1 text-slate-400 font-bold"
+              onClick={ClearFilter}
+            >
               Clear
             </button>
           </div>

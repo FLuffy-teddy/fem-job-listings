@@ -1,191 +1,62 @@
 "use client";
 
-import Image from "next/image";
-import data from "../json/data.json";
 import { useState } from "react";
+import data from "../json/data.json";
+import headerImg from "../../public/bg-header-desktop.svg";
+import headermobile from "../../public/bg-header-mobile.svg";
+import JobsComponent from "../app/components/jobs";
+import Filter from "../app/components/filter";
+import Image from "next/image";
 
-const jobListings = data;
+export type jobType = {
+  id: number;
+  company: string;
+  logo: string;
+  new: boolean;
+  featured: boolean;
+  position: string;
+  role: string;
+  level: string;
+  postedAt: string;
+  contract: string;
+  location: string;
+  languages: string[];
+  tools: string[];
+};
 
-const filterColor = "bg-filter";
-const fontColor = "text-primary font-bold";
-const borderColor = "border-background";
-const buttonColor = "bg-primary";
-
-const bgColor = "bg-background";
-
-export default function Home() {
-  const [jobFilter, setJobFilter] = useState<string[]>([]);
-
-  function buildOutJobs() {
-    //run through filters and return job listings based on filters selected
-    //if no filters are selected return all jobs
-    return jobListings.map((jobListing) => (
-      <li
-        className="bg-white my-4 p-4 shadow-lg border-2 border-white rounded-md"
-        key={jobListing.id}
-        data-filters={`${jobListing.role},${jobListing.level},${jobListing.tools},${jobListing.languages}`}
-      >
-        <div className="flex justify-between">
-          <div className="flex">
-            <Image
-              className="p-2"
-              src={jobListing.logo}
-              alt={jobListing.company}
-              width={90}
-              height={20}
-            />
-            <div className="flex flex-col">
-              <div className="flex items-center">
-                <h2 className={`${fontColor} font-black`}>
-                  {jobListing.company}
-                </h2>
-                {jobListing.new ? (
-                  <h2 className="bg-cyan-900 border-full py-1 px-2 text-white rounded-full mx-2">
-                    New
-                  </h2>
-                ) : null}
-                {jobListing.featured ? (
-                  <h2 className="bg-slate-900 border-full py-1 px-2 text-white rounded-full">
-                    Featured
-                  </h2>
-                ) : null}
-              </div>
-              <h3 className="text-black font-bold text-lg">
-                {jobListing.position}
-              </h3>
-              <div className="flex justify-between text-slate-500 text-md">
-                <p>{jobListing.postedAt}</p>
-                <p>{jobListing.contract}</p>
-                <p>{jobListing.location}</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between h-fit">
-            <button
-              className={`${fontColor} ${filterColor} border-1 border-cyan-900 p-2 mx-1`}
-              data-attribute={jobListing.role}
-              onClick={jobFilterEvent}
-            >
-              {jobListing.role}
-            </button>
-            <button
-              className={`${fontColor} ${filterColor} border-1 p-2 mx-1`}
-              data-attribute={jobListing.level}
-              onClick={jobFilterEvent}
-            >
-              {jobListing.level}
-            </button>
-            {jobListing.tools.map((tool, i) => (
-              <button
-                key={i}
-                className={`${fontColor} ${filterColor} border-1 p-2 mx-1`}
-                data-attribute={tool}
-                onClick={jobFilterEvent}
-              >
-                {tool}
-              </button>
-            ))}
-            {jobListing.languages.map((language, i) => (
-              <button
-                key={i}
-                className={`${fontColor} ${filterColor} border-1 p-2 mx-1`}
-                data-attribute={language}
-                onClick={jobFilterEvent}
-              >
-                {language}
-              </button>
-            ))}
-          </div>
-        </div>
-      </li>
-    ));
-  }
-  const jobFilterEvent = (event: any) => {
-    const jobAttribute = String(event.target.getAttribute("data-attribute"));
-    //if filter is already active prevent filter from attaching
-
-    const isFound = jobFilter.some((element) => {
-      if (element === jobAttribute) {
-        return true;
-      }
-      return false;
-    });
-
-    if (!isFound) {
-      setJobFilter([...jobFilter, jobAttribute]);
-    }
-  };
-
-  const removeJobFilter = (event: any) => {
-    var sibling = event.target.previousElementSibling;
-    const jobAttribute = String(sibling.getAttribute("data-attribute"));
-
-    setJobFilter(
-      jobFilter.filter((newFilterType) => newFilterType !== jobAttribute)
+export default function App() {
+  const [jobs, setJobs] = useState<jobType[]>(data);
+  const [filterText, setFilterText] = useState<string[]>([]);
+  function handleFilter(filterCriteria: string) {
+    setFilterText([...filterText, filterCriteria]);
+    const newFilter = [...jobs].filter((item) =>
+      [item.role, item.level, ...item.tools, ...item.languages].includes(
+        filterCriteria
+      )
     );
-  };
-  function resetJobFilter() {
-    setJobFilter(
-      jobFilter.filter((newFilterType) => newFilterType !== newFilterType)
-    );
+    setJobs(newFilter);
   }
-  function buildOutFilter() {
-    return (
-      <>
-        <div className="absolute w-full px-4 py-8 -top-16 bg-white shadow-lg border-2 border-white rounded-md flex align-center flex justify-between">
-          <ul className="flex">
-            {jobFilter.map((filter, i) => (
-              <div className="flex px-2" key={i}>
-                <li
-                  className={`${fontColor} ${filterColor} border-1 border-cyan-900 p-2 rounded-md`}
-                  data-attribute={filter}
-                >
-                  {filter}
-                </li>
-                <button
-                  className={`h-full w-1/4 bg-cyan-900 border-full px-2 text-white rounded-sm ${buttonColor}`}
-                  onClick={removeJobFilter}
-                >
-                  X
-                </button>
-              </div>
-            ))}
-          </ul>
-          <button className={`${fontColor}`} onClick={resetJobFilter}>
-            Clear
-          </button>
-        </div>
-        <ul>
-          {jobListings.map((jobListing) => (
-            <>
-              {jobFilter.includes(jobListing.role) ||
-              jobFilter.includes(jobListing.level) ||
-              jobFilter.includes(jobListing.languages[0]) ||
-              jobFilter.includes(jobListing.languages[1]) ||
-              jobFilter.includes(jobListing.languages[2]) ||
-              jobFilter.includes(jobListing.tools[0]) ||
-              jobFilter.includes(jobListing.tools[1]) ? (
-                <li key={jobListing.id}>{jobFilter}</li>
-              ) : null}
-            </>
-          ))}
-        </ul>
-      </>
-    );
-  }
+
   return (
-    <main className={`min-h-full ${bgColor}`}>
-      <header className="min-h-8 bg-cyan-900">
+    <>
+      <header className="mb-10 w-full bg-[#5ba4a4]">
         <Image
-          src="/bg-header-desktop.svg"
-          alt="header image"
+          src={window.innerWidth > 750 ? headerImg : headermobile}
+          height={1000}
           width={2000}
-          height={150}
+          alt={"Header"}
         />
       </header>
-      <ul className="max-w-6xl m-auto py-8 relative">
-        {jobFilter.length > 0 ? buildOutFilter() : buildOutJobs()}
-      </ul>
-    </main>
+      <main className="px-6 text-base">
+        <Filter
+          filterText={filterText}
+          setFilterText={setFilterText}
+          setJobs={setJobs}
+        />
+        <article className="flex flex-col gap-6 md:w-3/4 m-auto">
+          <JobsComponent handleFilter={handleFilter} jobs={jobs} />
+        </article>
+      </main>
+    </>
   );
 }

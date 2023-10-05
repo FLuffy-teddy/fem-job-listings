@@ -1,13 +1,13 @@
-import accountLogo from "./assets/images/account.svg";
-import eyecamcoLogo from "./assets/images/eyecam-co.svg";
-import faceitLogo from "./assets/images/faceit.svg";
-import insureLogo from "./assets/images/insure.svg";
-import manageLogo from "./assets/images/manage.svg";
-import myhomeLogo from "./assets/images/myhome.svg";
-import photosnapLogo from "./assets/images/photosnap.svg";
-import shortlyLogo from "./assets/images/shortly.svg";
-import loopLogo from "./assets/images/loop-studios.svg";
-import airfilterLogo from "./assets/images/the-air-filter-company.svg";
+import accountLogo from "../../../public/account.svg";
+import eyecamcoLogo from "../../../public/eyecam-co.svg";
+import faceitLogo from "../../../public/faceit.svg";
+import insureLogo from "../../../public/insure.svg";
+import manageLogo from "../../../public/manage.svg";
+import myhomeLogo from "../../../public/myhome.svg";
+import photosnapLogo from "../../../public/photosnap.svg";
+import shortlyLogo from "../../../public/shortly.svg";
+import loopLogo from "../../../public/loop-studios.svg";
+import airfilterLogo from "../../../public/the-air-filter-company.svg";
 
 export const LogoArray = [
   photosnapLogo,
